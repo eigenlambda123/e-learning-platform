@@ -9,6 +9,7 @@ from django.apps import apps
 from .forms import ModuleFormSet
 from .models import Course, Module, Content
 
+# Course Handling
 class ManageCourseListView(ListView):
     model = Course
     template_name = 'courses/manage/course/list.html'
@@ -17,7 +18,7 @@ class ManageCourseListView(ListView):
         qs = super().get_queryset()
         return qs.filter(owner=self.request.user)
     
-
+# Mixins
 class OwnerMixin:
     def get_queryset(self):
         qs = super().get_queryset()
@@ -51,6 +52,8 @@ class CourseDeleteView(OwnerCourseMixin, DeleteView):
     template_name = 'courses/manage/course/delete.html'
     permission_required = 'courses.delete_course'
 
+
+# Module Handling
 class CourseModuleUpdateView(TemplateResponseMixin, View):
     template_name = 'courses/manage/module/formset.html'
     course = None
@@ -77,6 +80,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         return self.render_to_response({'course': self.course,
                                         'formset': formset})
         
+# Content Handling
 class ContentCreateUpdateView(TemplateResponseMixin, View):
     module = None
     model = None
@@ -139,3 +143,15 @@ class ContentDeleteView(View):
         content.item.delete()
         content.delete()
         return redirect('module_content_list', module.id)
+
+
+# display all modules for a course and list the contents of a specific module
+
+class ModuleContentListView(TemplateResponseMixin, View):
+    template_name = 'courses/manage/module/content_list.html'
+
+    def get(self, request, module_id):
+        module = get_object_or_404(Module,
+                                   id=module_id,
+                                   course__owner=request.user)
+        return self.render_to_response({'module':module})
