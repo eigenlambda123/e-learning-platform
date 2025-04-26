@@ -9,6 +9,10 @@
 {% endblock %}
 
 {% block content %}
+
+
+<!-------Subjects-------->
+
   <h1>
     {% if subject %}
       {{ subject.title }} courses
@@ -33,6 +37,9 @@
       {% endfor %}
     </ul>
   </div>
+
+<!-------Modules-------->
+
   <div class="module">
     {% for course in courses %}
       {% with subject=course.subject %}
