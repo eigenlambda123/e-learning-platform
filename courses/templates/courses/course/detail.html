@@ -22,7 +22,7 @@
 <!------------------------Enrollment Section---------------------------------->
 
         {% if request.user.is_authenticated %}
-            <form action="{% url "student_enroll_course" %}, method="POST"">
+            <form action="{% url "student_enroll_course" %}", method="POST"">
                 {{ enroll_form }}
                 {% csrf_token %}
                 <input type="submit", value="Enroll now">
