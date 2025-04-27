@@ -3,15 +3,20 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>{% block title %}Educa{% endblock %}</title>
+    <title>{% block title %}Neormispogi{% endblock %}</title>
     <link href="{% static "css/base.css" %}" rel="stylesheet">
   </head>
   <body>
     <div id="header">
-      <a href="/" class="logo">Educa</a>
+      <a href="/" class="logo">Neormispogi</a>
       <ul class="menu">
         {% if request.user.is_authenticated %}
-          <li><a href="{% url "logout" %}">Sign out</a></li>
+          <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">
+              Sign out
+            </button>
+          </form>
         {% else %}
           <li><a href="{% url "login" %}">Sign in</a></li>
         {% endif %}
