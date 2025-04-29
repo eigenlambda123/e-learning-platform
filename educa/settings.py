@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles', 
     'students.apps.StudentsConfig',
+
+    # 3rd Party
+    'embed_video',
 ]
 
 MIDDLEWARE = [
