@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from courses.models import Subject, Course
 from courses.api.serializers import SubjectSerializer, CourseSerializer
+from courses.api.permissions import IsEnrolled
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -40,4 +41,9 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
         course = self.get_object()
         course.students.add(request.user)
         return Response({'enrolled': True})
-    
+    @action(detail=True,
+            methods=['get'],
+            authentication_classes=[BasicAuthentication],
+            permission_classes=[IsAuthenticated, IsEnrolled])
+    def content(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
